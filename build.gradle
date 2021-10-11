@@ -104,7 +104,7 @@ jar {
 }
 
 runClient {
-    args "--tweakClass org.spongepowered.asm.launch.MixinTweaker --mixin.config \"templatemod.mixins.json\""
+    args "--tweakClass org.spongepowered.asm.launch.MixinTweaker --mixin.config \"mixins.templatemod.json\""
     jvmArgs "-Dmixin.debug.verbose=true -Dmixin.debug.export=true -Dfml.coreMods.load=com.newwares.templatemod.FMLLoadingPlugin -DdebugBytecode=true"
 }
 
