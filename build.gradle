@@ -1,0 +1,132 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            url = "https://repo.spongepowered.org/maven"
+        }
+        maven {
+            url = "https://repo.sk1er.club/repository/maven-public"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
+    }
+
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "https://maven.minecraftforge.net/"
+    }
+    maven {
+        url = "https://repo.spongepowered.org/maven"
+    }
+    maven {
+        url = "https://repo.sk1er.club/repository/maven-public"
+    }
+    maven {
+        url = 'https://jitpack.io'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+compileJava.options.encoding = 'UTF-8'
+
+version = "1.0"
+group = "com.newwares.templatemod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "templatemod"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mixin {
+    add sourceSets.main, "templatemod.refmap.json"
+}
+
+minecraft {
+    version = "1.8.9-11.15.1.2318-1.8.9"
+    runDir = "run"
+    clientJvmArgs += "-Dmixin.debug.verbose=true -Dmixin.debug.export=true -Dfml.coreMods.load=com.newwares.templatemod.FMLLoadingPlugin"
+    mappings = "stable_22"
+    coreMod = 'com.newwares.templatemod.FMLLoadingPlugin'
+    clientRunArgs += "--tweakClass org.spongepowered.asm.launch.MixinTweaker --mixin templatemod.mixins.json"
+}
+
+dependencies {
+    //  compile group: "net.java.dev.jna", name: "jna", version: "5.8.0"
+    //compile 'org.spongepowered:mixin:0.8.2'
+    compile "org.spongepowered:mixin:0.7.11-SNAPSHOT"
+}
+
+
+processResources
+        {
+            exclude 'GradleStart**'
+            exclude '.cache'
+            exclude 'tv.twitch:twitch'
+            exclude "/unused/**"
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
+
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+
+                expand 'version': project.version, 'mcversion': project.minecraft.version
+            }
+
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+
+           // rename '(.+_at.cfg)', 'META-INF/$1'
+        }
+
+jar {
+    manifest {
+        attributes([
+                // Existing properties here
+                "FMLCorePlugin"              : "com.newwares.templatemod.FMLLoadingPlugin",
+                "FMLCorePluginContainsFMLMod": true,
+                "ForceLoadAsMod"             : true,
+                "TweakOrder"                 : "0",
+                "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker",
+                "ModSide"                    : "CLIENT",
+                "MixinConfigs"               : "mixins.templatemod.json"//
+        ])
+    }
+}
+
+
+shadowJar {
+    exclude 'GradleStart**'
+    exclude '.cache'
+    exclude 'tv.twitch:twitch'
+    exclude "com/newwares/templatemod/unused/**"
+}
+
+
+reobf {
+    shadowJar {}
+}
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+build {
+    clean
+    shadowJar
+    reobf
+    build
+ }
+

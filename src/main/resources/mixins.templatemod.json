@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "com.newwares.templatemod.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "templatemod.refmap.json",
+  "mixins": [
+  ],
+  "minVersion": "0.6"
+}

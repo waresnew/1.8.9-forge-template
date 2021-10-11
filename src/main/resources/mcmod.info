@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "templatemod",
+    "name": "Template Mod",
+    "description": "Template Mod Description",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "newwares"
+    ],
+    "credits": "newwares",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
