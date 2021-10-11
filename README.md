@@ -4,3 +4,4 @@
 - `gradlew setupDecompWorkspace`
 - `gradlew idea`
 - rename all instances of `templatemod` to your modid
+- rename all instances of `newwares` to whatever you want
