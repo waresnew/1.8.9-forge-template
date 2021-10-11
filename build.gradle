@@ -55,10 +55,8 @@ mixin {
 minecraft {
     version = "1.8.9-11.15.1.2318-1.8.9"
     runDir = "run"
-    clientJvmArgs += "-Dmixin.debug.verbose=true -Dmixin.debug.export=true -Dfml.coreMods.load=com.newwares.templatemod.FMLLoadingPlugin"
     mappings = "stable_22"
     coreMod = 'com.newwares.templatemod.FMLLoadingPlugin'
-    clientRunArgs += "--tweakClass org.spongepowered.asm.launch.MixinTweaker --mixin templatemod.mixins.json"
 }
 
 dependencies {
@@ -105,6 +103,10 @@ jar {
     }
 }
 
+runClient {
+    args "--tweakClass org.spongepowered.asm.launch.MixinTweaker --mixin.config \"templatemod.mixins.json\""
+    jvmArgs "-Dmixin.debug.verbose=true -Dmixin.debug.export=true -Dfml.coreMods.load=com.newwares.templatemod.FMLLoadingPlugin -DdebugBytecode=true"
+}
 
 shadowJar {
     exclude 'GradleStart**'
